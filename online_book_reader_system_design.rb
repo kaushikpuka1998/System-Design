@@ -34,9 +34,10 @@ class OnlineReaderSystem
 
     def set_active_user_to_inactive(user_id)
       if @Active_users[user_id].nil? || @Active_users[user_id] == 0
-        @Active_users[user_id] = 1
+
         puts "UID:#{user_id}, You have already Logged Out"
       else
+        @Active_users[user_id] = 0
         puts "UID:#{user_id} you are currently offline"
       end
     end
@@ -172,6 +173,9 @@ puts online_reader_system.adding_booking_to_user(134,1);
 puts online_reader_system.adding_booking_to_user(135,2);
 
 
+online_reader_system.set_active_user_to_inactive(135);
+puts ":::All Active Users:::"
+puts online_reader_system.get_active_users
 
 # value = {1 => "PAPC"}
 
