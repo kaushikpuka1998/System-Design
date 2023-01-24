@@ -23,17 +23,37 @@ class OnlineReaderSystem
         @Active_users
     end
 
+    def set_active_user(user_id)
+      if @Active_users[user_id].nil? || @Active_users[user_id] == 0
+        @Active_users[user_id] = 1
+        puts "UID:#{user_id}, You have Successfully Logged IN "
+      else
+        puts "UID:#{user_id} you already LoggedIn "
+      end
+    end
+
+    def set_active_user_to_inactive(user_id)
+      if @Active_users[user_id].nil? || @Active_users[user_id] == 0
+        @Active_users[user_id] = 1
+        puts "UID:#{user_id}, You have already Logged Out"
+      else
+        puts "UID:#{user_id} you are currently offline"
+      end
+    end
+
     def add_books(book)
 
         @Library.add_books_to_the_list(book)
     end
 
     def adding_booking_to_user(user_id,book_id)
-        @Library.allocate_book_to_user(user_id,book_id)  
-    end
+      if !get_active_users[user_id].nil? && get_active_users[user_id]>0
+        @Library.allocate_book_to_user(user_id,book_id)
+      else
+        puts "Sorry either You are currently Offline or not registered!!!"
+      end
 
-    
-    
+    end
 end
 
 
@@ -79,7 +99,7 @@ class Library
 
     def allocate_book_to_user(user_id,book_id)
         if !@list_of_books[book_id].nil?
-            if @list_of_books[book_id].get_alloc_user
+            if @list_of_books[book_id].get_alloc_user>0
                 puts "Sorry!!! #{@list_of_books[book_id].get_book_name} allocated to UserID: #{@list_of_books[book_id].get_alloc_user}"
             else
                 @list_of_books[book_id].set_alloc_user(user_id)
@@ -146,9 +166,10 @@ online_reader_system.getLibrary.add_books_to_the_list(algo_book1)
 
 online_reader_system.getLibrary.add_books_to_the_list(algo_book2)
 
-
+online_reader_system.set_active_user(134);
+online_reader_system.set_active_user(135);
 puts online_reader_system.adding_booking_to_user(134,1);
-puts online_reader_system.adding_booking_to_user(135,4);
+puts online_reader_system.adding_booking_to_user(135,2);
 
 
 
