@@ -2,7 +2,11 @@ class AllPerson
   @allPersons
 
   def initialize
-    @allPersons = Array.new
+    if @allPersons.nil?
+      @allPersons = Array.new
+    else
+      @allPersons
+    end
   end
   def register(person)
     @allPersons<<person
@@ -14,6 +18,7 @@ class AllPerson
         return @allPersons[i]
       end
     end
+    return nil
   end
 
   def getalluser
@@ -46,6 +51,8 @@ module Person
   @email
   @phone
   @allPersons
+  @active
+
 
   def initialize(id,name,address,email,phone)
     @id = id
@@ -53,6 +60,7 @@ module Person
     @address = address
     @email = email
     @phone = phone
+    @active = 1
   end
 end
 
@@ -68,6 +76,12 @@ end
 class Admin
   include Person
 
+  def block_user(id)
+    alluser = AllPerson.new
+    selecteduser = alluser.find_by_id(id)
+    selecteduser.active = 0
+  end
+
 end
 
 class Customer
@@ -75,10 +89,12 @@ class Customer
 
 end
 
+admin = Admin.new(2,"kg","Bangalore","kg@gmail.com","9775288755")
+
 kaushik = Guest.new(1,"kaushik","Jalpaiguri","kaushik@gmail.com","8159924565")
 allperson = AllPerson.new
 
 allperson.register(kaushik)
 
 puts allperson.getalluser.inspect
-puts allperson.find_by_id(1).name
+puts allperson.find_by_id(1).nil? ? "Nil" : allperson.find_by_id(1).name
