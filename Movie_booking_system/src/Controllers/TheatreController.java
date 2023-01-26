@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TheatreController {
 
-    Map<City, List<Theatre>> cityagainsttheatre;
+    Map<String, List<Theatre>> cityagainsttheatre;
     List<Theatre> alltheatres;
 
     public TheatreController()
@@ -24,16 +24,16 @@ public class TheatreController {
     public void addTheatre(City city,Theatre theatre)
     {
         alltheatres.add(theatre);
-        List<Theatre> list_of_theatres = cityagainsttheatre.getOrDefault(city,new ArrayList<>());
+        List<Theatre> list_of_theatres = cityagainsttheatre.getOrDefault(city.getName(),new ArrayList<>());
 
         list_of_theatres.add(theatre);
-        cityagainsttheatre.put(city,list_of_theatres);
+        cityagainsttheatre.put(city.getName(),list_of_theatres);
     }
 
     public Map<Theatre, List<Show>> getAllShow(City city, Movie movie)
     {
         Map<Theatre, List<Show>> allshow = new HashMap<>();
-        List<Theatre> list_of_theatres = cityagainsttheatre.get(city);
+        List<Theatre> list_of_theatres = cityagainsttheatre.get(city.getName());
 
         for(Theatre theatre :list_of_theatres)
         {

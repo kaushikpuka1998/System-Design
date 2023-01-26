@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MovieController {
-    Map<City, List<Movie>> cityagainstmovie;
+    Map<String, List<Movie>> cityagainstmovie;
     List<Movie> allmovies;
 
     public MovieController()
@@ -21,9 +21,9 @@ public class MovieController {
     public void addMovie(City city,Movie movie)
     {
         allmovies.add(movie);
-        List<Movie> allmoviesmappedwithcity = cityagainstmovie.getOrDefault(city,new ArrayList<>());
+        List<Movie> allmoviesmappedwithcity = cityagainstmovie.getOrDefault(city.getName(),new ArrayList<>());
         allmoviesmappedwithcity.add(movie);
-        cityagainstmovie.put(city,allmoviesmappedwithcity);
+        cityagainstmovie.put(city.getName(),allmoviesmappedwithcity);
     }
 
     public Movie getMovieByName(String name)
@@ -40,7 +40,7 @@ public class MovieController {
 
     public List<Movie> getAllmoviesByCityName(City city)
     {
-        return cityagainstmovie.get(city);
+        return cityagainstmovie.get(city.getName());
     }
 
 }

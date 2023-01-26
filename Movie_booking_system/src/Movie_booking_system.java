@@ -1,10 +1,12 @@
 import Controllers.MovieController;
 import Controllers.TheatreController;
+import Enums.PaymentStatus;
 import Enums.SeatCatagory;
 import Models.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static Enums.SeatCatagory.GOLD;
 
@@ -31,6 +33,60 @@ public class Movie_booking_system {
     {
         createMovie();
         create_theatre();
+        create_booking("Avenger end game",new City(1,"Bangalore"),30);
+        create_booking("Avenger end game",new City(1,"Bangalore"),50);
+    //create_booking("Avenger end game",new City(1,"Bangalore"),40);
+    }
+
+    public void create_booking(String movie_name,City city_name,int seat_number)
+    {
+        //all movie running in the city
+        List<Movie> movie_running_in_city = movieController.getAllmoviesByCityName(city_name);
+        //System.out.println("KKK"+movie_running_in_city.get(0));
+        Movie interested_movie = null;
+        for(Movie movie:movie_running_in_city)
+        {
+            if(movie.getName() == movie_name)
+            {
+                interested_movie = movie;
+            }
+        }
+        //selected_city with interested movies show
+        Map<Theatre, List<Show>> allshow_of_selected_city = theatreController.getAllShow(city_name,interested_movie);
+        //System.out.println("HHH"+allshow_of_selected_city.toString());
+        Map.Entry<Theatre, List<Show>> particular_show =  allshow_of_selected_city.entrySet().iterator().next();
+
+        List<Show> list = particular_show.getValue();
+        Show interestedshow = list.get(0);
+
+        int seatnumber = seat_number;
+        List<Integer> bookedSeats = interestedshow.getBookedseatIds();
+        if(bookedSeats.contains(seatnumber))
+        {
+            System.out.println("Seat Number "+seatnumber+" already booked,try another");
+        }
+        else{
+            bookedSeats.add(seatnumber);
+            Screen screen = interestedshow.getScreen();
+            List<Seat> allseast = screen.getSeats();
+
+            List<Seat> booking_Seats = new ArrayList<>();
+            Booking booking1 = new Booking();
+            for(Seat seat:allseast)
+            {
+                if(seat.getId() ==  seatnumber)
+                {
+                    booking_Seats.add(seat);
+                }
+            }
+            Payment payment_for_booking1 =  new Payment(1, PaymentStatus.SUCEESSFUL);
+            interestedshow.setBookedseatIds(bookedSeats);
+            booking1.setShow(interestedshow);
+            booking1.setPayment(payment_for_booking1);
+            booking1.setSeats(booking_Seats);
+            System.out.println("Booking Successful,Seat Number: "+booking_Seats.get(0).getId()+" locked");
+            System.out.println("Payment Status: "+payment_for_booking1.getPaymentstatus());
+        }
     }
 
     public void create_theatre()
@@ -61,9 +117,9 @@ public class Movie_booking_system {
         Show cinebuzz_evening_show = create_show(2,movie1,inox_bangalore.getScreenList().get(0),20);
 
         List<Show> allshowofcinebuzz = new ArrayList<>();
-        allshowofinox.add(cinebuzz_morning_show);
-        allshowofinox.add(cinebuzz_evening_show);
-        inox_bangalore.setShowlist(allshowofcinebuzz);
+        allshowofcinebuzz.add(cinebuzz_morning_show);
+        allshowofcinebuzz.add(cinebuzz_evening_show);
+        inox_bangalore.setShowlist(allshowofinox);
 
         theatreController.addTheatre(bangalore,inox_bangalore);
         theatreController.addTheatre(bangalore,cinebuzz_bangalore);
