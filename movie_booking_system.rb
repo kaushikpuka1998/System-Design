@@ -98,3 +98,4 @@ allperson.register(kaushik)
 
 puts allperson.getalluser.inspect
 puts allperson.find_by_id(1).nil? ? "Nil" : allperson.find_by_id(1).name
+
