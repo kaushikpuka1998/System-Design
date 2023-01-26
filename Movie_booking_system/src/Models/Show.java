@@ -10,12 +10,11 @@ public class Show {
     int starttime;
     List<Integer> bookedseatIds = new ArrayList<>();
 
-    public Show(int show_id, Movie movie, Screen screen, int starttime, List<Integer> bookedseatIds) {
+    public Show(int show_id, Movie movie, Screen screen, int starttime) {
         this.show_id = show_id;
         this.movie = movie;
         this.screen = screen;
         this.starttime = starttime;
-        this.bookedseatIds = bookedseatIds;
     }
 
     public int getShow_id() {
